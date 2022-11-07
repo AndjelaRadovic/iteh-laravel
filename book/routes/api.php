@@ -2,6 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BookTestController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\AuthorBookController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +21,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+//Route::get('/books', [BookTestController::class, 'index']);
+//Route::get('/books/{id}', [BookTestController::class, 'show']);
+
+
+//Route::get('/users', [UserController::class, 'index']);
+//Route::get('/users/{id}', [UserController::class, 'show']);
+
+
+Route::resource('books', BookController::class);
+
+Route::get('authors/{id}/books', [AuthorBookController::class, 'index'])->name('authors.books.index');

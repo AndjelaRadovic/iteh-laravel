@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
         $user1 = User::create(['name'=>'ana','email'=>'ana123@gmail.com','password'=>'ana']);
         $user2 = User::create(['name'=>'maja','email'=>'maja321@gmail.com','password'=>'maja']);
 
+        $users = User::factory(3)->create();
+
         $author1 = Author::create(['first_name'=>'Herman','last_name'=>'Melville','country'=>'USA']);
         $author2 = Author::create(['first_name'=>'Franz','last_name'=>'Kafka','country'=>'Czech Republic']);
         $author3 = Author::create(['first_name'=>'Agatha','last_name'=>'Christie','country'=>'United Kingdom']);
@@ -46,7 +48,7 @@ class DatabaseSeeder extends Seeder
        
         ]);
 
-        $book1 = Book::create([
+        $book2 = Book::create([
             'title'=>'Death on the Nile',
             'number_of_pages'=>'240',
             'year_of_release'=>'1937',
@@ -56,7 +58,7 @@ class DatabaseSeeder extends Seeder
        
         ]);
 
-        $book1 = Book::create([
+        $book3 = Book::create([
             'title'=>'Metamorphosis',
             'number_of_pages'=>'100',
             'year_of_release'=>'1915',
@@ -65,6 +67,29 @@ class DatabaseSeeder extends Seeder
             'user_id'=>$user2->id
        
         ]);
+
+        $book4 = Book::create([
+            'title'=>'The Trial',
+            'number_of_pages'=>'178',
+            'year_of_release'=>'1925',
+            'author_id'=>$author2->id,
+            'genre_id'=>$genre1->id,
+            'user_id'=>$user1->id
+       
+        ]);
+
+
+        
+        $book5 = Book::create([
+            'title'=>'Murder on the Orient Express',
+            'number_of_pages'=>'256',
+            'year_of_release'=>'1934',
+            'author_id'=>$author3->id,
+            'genre_id'=>$genre2->id,
+            'user_id'=>$user2->id
+       
+        ]);
+
 
 
     }
