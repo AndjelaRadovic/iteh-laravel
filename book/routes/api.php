@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookTestController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthorBookController;
+use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\API\AuthController;
 
 
 /*
@@ -27,8 +29,32 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //Route::get('/books/{id}', [BookTestController::class, 'show']);
 
 
-//Route::get('/users', [UserController::class, 'index']);
-//Route::get('/users/{id}', [UserController::class, 'show']);
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/{id}', [UserController::class, 'show']);
+
+Route::get('/authors', [AuthorController::class, 'index']);
+Route::get('/authors/{id}', [AuthorController::class, 'show']);
+
+//Route::resource('books', BookController::class);
+
+//Route::get('authors/{id}/books', [AuthorBookController::class, 'index'])->name('authors.books.index');
+
+//Route::resource('authors.books', AuthorBookController::class)->only('index');
+
+Route::post('/register',[AuthController::class,'register']);
+
+Route::post('/login',[AuthController::class,'login']);
 
 
-Route::resource('books', BookController::class);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/profile', function(Request $request) {
+        return auth()->user();
+    });
+    Route::resource('books', BookController::class)->only(['update','store','destroy']);
+
+    // API route for logout user
+    Route::post('/logout', [AuthController::class, 'logout']);
+}); 
+
+Route::resource('books', BookController::class)->only(['index']);

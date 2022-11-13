@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;    
+
 class BookController extends Controller
 {
     /**
@@ -38,7 +42,29 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'title' => 'required|string|max:255',
+            'number_of_pages' => 'required|numeric',
+            'year_of_release' => 'required|numeric',
+            'author_id' => 'required',
+            'genre_id' => 'required',
+           
+        ]);
+
+        if($validator->fails())
+            return response()->json($validator->errors());
+
+        $book=Book::create([
+            'title' => $request->title,
+            'number_of_pages' => $request->number_of_pages,
+            'year_of_release' => $request->year_of_release,
+            'author_id' => $request->author_id,
+            'genre_id' => $request->genre_id,
+            'user_id' => Auth::user()->id
+        ]);    
+
+        return response()->json(['Book is created successfully.', new BookResource($book)]);
+
     }
 
     /**
@@ -72,7 +98,29 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'title' => 'required|string|max:255',
+            'number_of_pages' => 'required|numeric',
+            'year_of_release' => 'required|numeric',
+            'author_id' => 'required',
+            'genre_id' => 'required'
+            
+        ]);
+
+        if($validator->fails())
+            return response()->json($validator->errors());
+
+
+        $book -> title = $request -> title;
+        $book -> number_of_pages = $request -> number_of_pages;
+        $book -> year_of_release = $request -> year_of_release;
+        $book -> author_id = $request -> author_id;
+        $book -> genre_id = $request -> genre_id;
+
+        $book -> save();
+
+        return response()->json(['Book is updated successfully.', new BookResource($book)]);
+
     }
 
     /**
@@ -83,6 +131,8 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        //
+        $book -> delete();
+
+        return response()->json('Book is deleted successfully.');
     }
 }

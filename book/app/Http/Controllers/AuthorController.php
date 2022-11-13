@@ -14,7 +14,8 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        //
+        $authors = Author::all();
+        return $authors;
     }
 
     /**
@@ -44,9 +45,12 @@ class AuthorController extends Controller
      * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function show(Author $author)
+    public function show($author_id)
     {
-        //
+        $author = Author::find($author_id);
+        if(is_null($author))
+            return response()->json('Data not found', 404);
+        return response()->json($author);
     }
 
     /**
