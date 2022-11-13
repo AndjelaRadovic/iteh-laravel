@@ -32,5 +32,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::resource('books', BookController::class);
-
-Route::get('authors/{id}/books', [AuthorBookController::class, 'index'])->name('authors.books.index');
